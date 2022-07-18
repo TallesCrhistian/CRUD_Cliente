@@ -1,5 +1,6 @@
-namespace Produto.Models
+﻿namespace Produto.Models
 {
+
     public class ErrorViewModel
     {
         public string? RequestId { get; set; }

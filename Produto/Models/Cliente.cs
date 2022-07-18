@@ -33,6 +33,6 @@ namespace Produto.Models
         [Column("Email")]
         public string Email { get; set; }
 
-        public List<Endereco> Enderecos { get; set; }
+        
     }
 }

@@ -12,8 +12,8 @@ using Produto.Data;
 namespace Produto.Migrations
 {
     [DbContext(typeof(ClienteContext))]
-    [Migration("20220716195745_DateTime")]
-    partial class DateTime
+    [Migration("20220717225258_Root")]
+    partial class Root
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

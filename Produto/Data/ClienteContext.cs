@@ -10,18 +10,9 @@ namespace Produto.Data
         {
 
         }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Endereco>()
-           .Property<string>("ClienteForeignKey");
-
-            modelBuilder.Entity<Endereco>()
-           .HasOne(e => e.Cliente)
-           .WithMany(c => c.Enderecos)
-           .HasForeignKey("ClienteForeignKey");
-        }
-
-        public DbSet<Cliente> Cliente { get; set; }
-        public DbSet<Endereco> Endereco { get; set; }
+     
+        public DbSet<Cliente> Cliente { get; set;}
+       
+      
     }
 }
