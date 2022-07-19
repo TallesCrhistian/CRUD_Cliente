@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Produto.Data;
 
@@ -11,9 +12,10 @@ using Produto.Data;
 namespace Produto.Migrations
 {
     [DbContext(typeof(ClienteContext))]
-    partial class ClienteContextModelSnapshot : ModelSnapshot
+    [Migration("20220718233911_Relacao")]
+    partial class Relacao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,15 +26,8 @@ namespace Produto.Migrations
 
             modelBuilder.Entity("Produto.Models.Cliente", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
                     b.Property<string>("Cpf")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasColumnType("nvarchar(450)")
                         .HasColumnName("Cpf");
 
                     b.Property<DateTime>("DataNascimento")
@@ -54,18 +49,16 @@ namespace Produto.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Telefone");
 
-                    b.HasKey("Id");
+                    b.HasKey("Cpf");
 
                     b.ToTable("Cliente");
                 });
 
             modelBuilder.Entity("Produto.Models.Endereco", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.Property<string>("Cpf")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("Cpf");
 
                     b.Property<string>("Bairro")
                         .IsRequired()
@@ -77,8 +70,9 @@ namespace Produto.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Cidade");
 
-                    b.Property<int>("ClienteId")
-                        .HasColumnType("int");
+                    b.Property<string>("EnderecoCpf")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Numero")
                         .HasColumnType("int")
@@ -89,9 +83,9 @@ namespace Produto.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Rua");
 
-                    b.HasKey("Id");
+                    b.HasKey("Cpf");
 
-                    b.HasIndex("ClienteId")
+                    b.HasIndex("EnderecoCpf")
                         .IsUnique();
 
                     b.ToTable("Enderecos");
@@ -101,7 +95,7 @@ namespace Produto.Migrations
                 {
                     b.HasOne("Produto.Models.Cliente", "Cliente")
                         .WithOne("Endereco")
-                        .HasForeignKey("Produto.Models.Endereco", "ClienteId")
+                        .HasForeignKey("Produto.Models.Endereco", "EnderecoCpf")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

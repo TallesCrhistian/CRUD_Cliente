@@ -6,6 +6,8 @@ namespace Produto.Models
     public class Cliente
     {
         [Key]
+        public int Id { get; set; }
+
         [Required]
         [Display(Name = "Cpf")]
         [Column("Cpf")]
@@ -33,6 +35,8 @@ namespace Produto.Models
         [Column("Email")]
         public string Email { get; set; }
 
-        
+        public Endereco Endereco  { get; set; }
+
+
     }
 }

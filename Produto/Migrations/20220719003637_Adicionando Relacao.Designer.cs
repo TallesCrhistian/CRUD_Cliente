@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Produto.Data;
 
@@ -11,9 +12,10 @@ using Produto.Data;
 namespace Produto.Migrations
 {
     [DbContext(typeof(ClienteContext))]
-    partial class ClienteContextModelSnapshot : ModelSnapshot
+    [Migration("20220719003637_Adicionando Relacao")]
+    partial class AdicionandoRelacao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,7 +65,8 @@ namespace Produto.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
@@ -74,10 +77,10 @@ namespace Produto.Migrations
 
                     b.Property<string>("Cidade")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Cidade");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ClienteId")
+                    b.Property<int?>("ClienteId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int>("Numero")

@@ -10,88 +10,91 @@ using Produto.Models;
 
 namespace Produto.Controllers
 {
-    public class ClientesController : Controller
+    public class EnderecoesController : Controller
     {
         private readonly ClienteContext _context;
 
-        public ClientesController(ClienteContext context)
+        public EnderecoesController(ClienteContext context)
         {
             _context = context;
         }
 
-        // GET: Clientes
+        // GET: Enderecoes
         public async Task<IActionResult> Index()
         {
-              return _context.Cliente != null ? 
-                          View(await _context.Cliente.ToListAsync()) :
-                          Problem("Entity set 'ClienteContext.Cliente'  is null.");
+            var clienteContext = _context.Enderecos.Include(e => e.Cliente);
+            return View(await clienteContext.ToListAsync());
         }
 
-        // GET: Clientes/Details/5
+        // GET: Enderecoes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Cliente == null)
+            if (id == null || _context.Enderecos == null)
             {
                 return NotFound();
             }
 
-            var cliente = await _context.Cliente
+            var endereco = await _context.Enderecos
+                .Include(e => e.Cliente)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (cliente == null)
+            if (endereco == null)
             {
                 return NotFound();
             }
 
-            return View(cliente);
+            return View(endereco);
         }
 
-        // GET: Clientes/Create
+        // GET: Enderecoes/Create
         public IActionResult Create()
         {
+            ViewData["ClienteId"] = new SelectList(_context.Cliente, "Id", "Cpf");
             return View();
         }
 
-        // POST: Clientes/Create
+        // POST: Enderecoes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Cpf,Nome,DataNascimento,Telefone,Email")] Cliente cliente)
+        public async Task<IActionResult> Create([Bind("Id,Cidade,Bairro,Rua,Numero,ClienteId")] Endereco endereco)
         {
             if (ModelState.IsValid)
             {
-                cliente.Endereco = null;
-                _context.Add(cliente);
+                
+                _context.Add(endereco);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(cliente);
+            ViewData["ClienteId"] = new SelectList(_context.Cliente, "Id" , "Cpf", endereco.ClienteId);
+            return View(endereco);
         }
 
-        // GET: Clientes/Edit/5
+        // GET: Enderecoes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Cliente == null)
+            if (id == null || _context.Enderecos == null)
             {
                 return NotFound();
             }
 
-            var cliente = await _context.Cliente.FindAsync(id);
-            if (cliente == null)
+            var endereco = await _context.Enderecos.FindAsync(id);
+            if (endereco == null)
             {
                 return NotFound();
             }
-            return View(cliente);
+            ViewData["ClienteId"] = new SelectList(_context.Cliente, "Id", "Cpf", endereco.ClienteId);
+            return View(endereco);
         }
 
-        // POST: Clientes/Edit/5
+        // POST: Enderecoes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Cpf,Nome,DataNascimento,Telefone,Email")] Cliente cliente)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Cidade,Bairro,Rua,Numero,ClienteId")] Endereco endereco)
         {
-            if (id != cliente.Id)
+            if (id != endereco.Id)
             {
                 return NotFound();
             }
@@ -100,12 +103,12 @@ namespace Produto.Controllers
             {
                 try
                 {
-                    _context.Update(cliente);
+                    _context.Update(endereco);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ClienteExists(cliente.Id))
+                    if (!EnderecoExists(endereco.Id))
                     {
                         return NotFound();
                     }
@@ -116,49 +119,51 @@ namespace Produto.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(cliente);
+            ViewData["ClienteId"] = new SelectList(_context.Cliente, "Id", "Cpf", endereco.ClienteId);
+            return View(endereco);
         }
 
-        // GET: Clientes/Delete/5
+        // GET: Enderecoes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Cliente == null)
+            if (id == null || _context.Enderecos == null)
             {
                 return NotFound();
             }
 
-            var cliente = await _context.Cliente
+            var endereco = await _context.Enderecos
+                .Include(e => e.Cliente)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (cliente == null)
+            if (endereco == null)
             {
                 return NotFound();
             }
 
-            return View(cliente);
+            return View(endereco);
         }
 
-        // POST: Clientes/Delete/5
+        // POST: Enderecoes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Cliente == null)
+            if (_context.Enderecos == null)
             {
-                return Problem("Entity set 'ClienteContext.Cliente'  is null.");
+                return Problem("Entity set 'ClienteContext.Enderecos'  is null.");
             }
-            var cliente = await _context.Cliente.FindAsync(id);
-            if (cliente != null)
+            var endereco = await _context.Enderecos.FindAsync(id);
+            if (endereco != null)
             {
-                _context.Cliente.Remove(cliente);
+                _context.Enderecos.Remove(endereco);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ClienteExists(int id)
+        private bool EnderecoExists(int id)
         {
-          return (_context.Cliente?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Enderecos?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

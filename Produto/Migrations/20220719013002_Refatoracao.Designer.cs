@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Produto.Data;
 
@@ -11,9 +12,10 @@ using Produto.Data;
 namespace Produto.Migrations
 {
     [DbContext(typeof(ClienteContext))]
-    partial class ClienteContextModelSnapshot : ModelSnapshot
+    [Migration("20220719013002_Refatoracao")]
+    partial class Refatoracao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

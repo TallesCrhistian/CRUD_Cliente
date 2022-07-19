@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Produto.Data;
 
@@ -11,9 +12,10 @@ using Produto.Data;
 namespace Produto.Migrations
 {
     [DbContext(typeof(ClienteContext))]
-    partial class ClienteContextModelSnapshot : ModelSnapshot
+    [Migration("20220719001750_Zerando Relacao")]
+    partial class ZerandoRelacao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,7 +65,8 @@ namespace Produto.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
@@ -77,8 +80,9 @@ namespace Produto.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Cidade");
 
-                    b.Property<int>("ClienteId")
-                        .HasColumnType("int");
+                    b.Property<string>("Cpf")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Numero")
                         .HasColumnType("int")
@@ -91,27 +95,7 @@ namespace Produto.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClienteId")
-                        .IsUnique();
-
                     b.ToTable("Enderecos");
-                });
-
-            modelBuilder.Entity("Produto.Models.Endereco", b =>
-                {
-                    b.HasOne("Produto.Models.Cliente", "Cliente")
-                        .WithOne("Endereco")
-                        .HasForeignKey("Produto.Models.Endereco", "ClienteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cliente");
-                });
-
-            modelBuilder.Entity("Produto.Models.Cliente", b =>
-                {
-                    b.Navigation("Endereco")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
