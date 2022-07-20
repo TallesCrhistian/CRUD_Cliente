@@ -56,11 +56,11 @@ namespace Produto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Cpf,Nome,DataNascimento,Telefone,Email")] Cliente cliente)
+        public async Task<IActionResult> Create(Cliente cliente)
         {
             if (ModelState.IsValid)
             {
-                cliente.Endereco = null;
+                
                 _context.Add(cliente);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
