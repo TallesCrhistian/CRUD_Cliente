@@ -57,15 +57,15 @@ namespace Produto.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Cliente cliente)
-        {
-            if (ModelState.IsValid)
-            {
-                
+        {           
+           
+
                 _context.Add(cliente);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            return View(cliente);
+           
+
+           // return View(cliente);
         }
 
         // GET: Clientes/Edit/5

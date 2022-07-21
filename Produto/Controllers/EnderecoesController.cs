@@ -59,13 +59,12 @@ namespace Produto.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Cidade,Bairro,Rua,Numero,ClienteId")] Endereco endereco)
         {
-            if (ModelState.IsValid)
-            {
+            
                 
                 _context.Add(endereco);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
+            
             ViewData["ClienteId"] = new SelectList(_context.Cliente, "Id" , "Cpf", endereco.ClienteId);
             return View(endereco);
         }
